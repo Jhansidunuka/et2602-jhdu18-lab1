@@ -14,15 +14,13 @@ server.setsockopt(socket.SOLSOCKET, socket.SOREUSEADDR, 1)
 
 
 info = (sys.argv[1])
-a=info.split(':')
-iPaddress=str(a[0])
-port=int(a[1])
+x=info.split(':')
+iPaddress=str(x[0])
+port=int(x[1])
 
 server.bind((iPaddress,port))
-'''binds ip and port of the server '''
 server.listen(100)
-'''buffer for clients'''
-print('Hello my name is Jhansi, Welcome to the chat server')
+print('Im Jhansi, Welcome to the chat server')
 print('Waiting for connections')
 
 
@@ -41,10 +39,10 @@ def clientthread(conn,addr):
                 conn.sendall('OK'.encode('utf-8'))
                 break
             elif len(nick1) or regex.search(nick1) != None:
-                conn.sendall('ERR nick name'.encode('utf-8'))
+                conn.sendall('ERR malformed nick name'.encode('utf-8'))
             else:
                 conn.close()
-                print(address[0]+" has been disconnected")
+                print(address[0]+" disconnected")
                 clients.remove(conn)
                 del clients[conn]
                 break
