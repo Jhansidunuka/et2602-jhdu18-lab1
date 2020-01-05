@@ -6,7 +6,7 @@ from _thread import *
 import select 
 import re 
 
-if len(sys.argument)!=3:
+if len(sys.argv)!=3:
     print("entry format = ./chatclient ip:port nickname")
     sys.exit()
 
