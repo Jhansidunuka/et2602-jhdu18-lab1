@@ -46,22 +46,16 @@ elif okmessage == "ERR  nick name":
 
 
 while True:
-    socketlist=[sys.stdin, server]
-    ''' here either user wants to give an input to send to other people or server is sending a msg to us to be displayed on the terminal. '''
+    s_list=[sys.stdin, server]
+ 
 
-    readsockets,writesockets,errorsockets=select.select(socketlist,[],[])
-    '''def select(rlist, wlist, xlist, timeout)
-Wait until one or more file descriptors are ready for some kind of I/O. The first three arguments are sequences of file descriptors to be waited for: rlist -- wait until ready for reading wlist -- wait until ready for writing xlist -- wait for an `exceptional condition'' If only one kind of condition is required, pass [] for the other lists. A file descriptor is either a socket or file object, or a small integer gotten from a fileno() method call on one of those.
-The optional 4th argument specifies a timeout in seconds; it may be a floating point number to specify fractions of seconds. If it is absent or None, the call will never time out.
-The return value is a tuple of three lists corresponding to the first three arguments; each contains the subset of the corresponding file descriptors that are ready.
-'''
-    for sockets in readsockets:
+    r_sockets,w_sockets,e_sockets=select.select(s_list,[],[])
+    for sockets in r_sockets:
         if sockets == server:
             msg = sockets.recv(2048).decode('utf-8')
             print(msg)
         else:
             msg=sys.stdin.readline()
-            #sys.stdin is a system output that represents standard input .readline() is used to readlines from the input
             msg = 'MSG '+ msg
             if msg == '\n':
                 continue
