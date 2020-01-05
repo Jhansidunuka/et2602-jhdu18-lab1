@@ -15,13 +15,13 @@ server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
 
 inf = (sys.argv[1])
-a=inf.split(':')
+x=inf.split(':')
 iPaddress=str(a[0])
-port=int(a[1])
+port=int(x[1])
 nick=str(sys.argv[2])
 
 #used to store values from command line
-server.connect((iPaddr, port))
+server.connect((iPaddress, port))
 #connects to the server 
 firstmsg=server.recv(2048).decode('utf-8')
 
@@ -36,7 +36,7 @@ okmessage=server.recv(2048).decode('utf-8')
 print(okmessage)
 if okmessage == "OK":
     pass
-elif okmessage == "ERR  nick name":
+elif okmessage == "ERR  malformed nick name":
     print('nickname limited to 12 chars')
     print('try with valid nickname')
     sys.exit()
