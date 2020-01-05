@@ -5,7 +5,7 @@ from _thread import *
 import select 
 import re 
 
-if len(sys.argv)!=2:
+if len(sys.arguments)!=2:
     print("entry format = ./chatserver ip:port ")
     sys.exit()
 
