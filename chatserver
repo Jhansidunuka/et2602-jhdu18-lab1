@@ -111,7 +111,7 @@ while True:
     #accepts connections 
     conn.sendall('Hello 1'.encode('utf-8'))
     clients.append(conn)
-    print(address[0]+" has connected")
+    print(address[0]+" has been connected")
     
     startnewthread(clientthread,(conn,addr))
     #starts a new process for every new client 
