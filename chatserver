@@ -103,11 +103,11 @@ def broadcasting(msg,connection,nick1):
             except KeyboardInterrupt:
                     clients.remove(sockets)
                     break 
-''' above function is used to broadcast message '''
+
 
 
 while True:
-    conn,address=server.accept()
+    conn,addr=server.accept()
     #accepts connections 
     conn.sendall('Hello 1'.encode('utf-8'))
     clients.append(conn)
