@@ -65,7 +65,7 @@ def clientthread(conn,addr):
                     break 
 
                 elif 'MSG ' not in msg:
-                    conn.sendall('ERROR msg'.encode('utf-8'))
+                    conn.sendall('ERROR malformed msg'.encode('utf-8'))
                 else:
 
                 
@@ -79,7 +79,7 @@ def clientthread(conn,addr):
                             
                             else:
                                 pass
-                    #logic for checking control        
+                           
                         if count != 0:
                             conn.sendall('ERROR -> dont use control characters'.encode('utf-8'))
                         else:
