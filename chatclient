@@ -46,11 +46,11 @@ elif okmessage == "ERR  malformed nick name":
 
 
 while True:
-    s_list=[sys.stdin, server]
+    socketlist=[sys.stdin, server]
  
 
-    r_sockets,w_sockets,e_sockets=select.select(s_list,[],[])
-    for sockets in r_sockets:
+    readsockets,writesockets,errorsockets=select.select(socketlist,[],[])
+    for sockets in readsockets:
         if sockets == server:
             msg = sockets.recv(2048).decode('utf-8')
             print(msg)
