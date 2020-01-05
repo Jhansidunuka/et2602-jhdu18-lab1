@@ -33,12 +33,12 @@ nick = 'NICK ' + nick
 server.sendall(nick.encode('utf-8'))
 #senall command sends the info in it as bytes to the server , it sends all the bytes at a time
 okmessage=server.recv(2048).decode('utf-8')
-print(ok_msg)
+print(okmessage)
 if okmessage == "OK":
     pass
 elif okmessage == "ERR  nick name":
-    print('do not enter nick name with special characters,limit to 12 chars')
-    print('sorry you are disconnected try again with valid nickname')
+    print('nickname limited to 12 chars')
+    print('try with valid nickname')
     sys.exit()
     
     
