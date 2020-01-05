@@ -38,7 +38,7 @@ if okmessage == "OK":
     pass
 elif okmessage == "ERR  malformed nick name":
     print('nickname limited to 12 chars')
-    print('try with valid nickname')
+    print('try valid nickname')
     sys.exit()
     
     
