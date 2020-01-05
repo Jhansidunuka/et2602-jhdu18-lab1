@@ -21,7 +21,7 @@ port=int(x[1])
 server.bind((iPaddress,port))
 server.listen(100)
 print('Im Jhansi, Welcome to the chat server')
-print('Waiting for connections')
+print('Waiting to connect')
 
 
 clients=[]
