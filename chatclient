@@ -10,17 +10,15 @@ if len(sys.arguments)!=3:
     print("entry format = ./chatclient ip:port nickname")
     sys.exit()
 
-server = socket.socket(socket.AFINET, socket.SOCKSTREAM)
-'''creates a socket object with address of IPV4 type and TCP socket'''
-server.setsockopt(socket.SOLSOCKET, socket.SOREUSEADDR, 1)
-'''the above command is used for resuing the address each and every time i 
-restart the program '''
+server = socket.socket(socket.Af_INET, socket.SOCK_STREAM)
+server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
-info = (sys.arguments[1])
-a=info.split(':')
+
+inf = (sys.argv[1])
+a=inf.split(':')
 iPaddress=str(a[0])
 port=int(a[1])
-nick=str(sys.arguments[2])
+nick=str(sys.argv[2])
 
 #used to store values from command line
 server.connect((iPaddr, port))
