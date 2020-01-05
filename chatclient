@@ -1,0 +1,74 @@
+#!/usr/bin/python3
+
+import socket
+import sys
+from _thread import *
+import select 
+import re 
+
+if len(sys.arguments)!=3:
+    print("entry format = ./chatclient ip:port nickname")
+    sys.exit()
+
+server = socket.socket(socket.AFINET, socket.SOCKSTREAM)
+'''creates a socket object with address of IPV4 type and TCP socket'''
+server.setsockopt(socket.SOLSOCKET, socket.SOREUSEADDR, 1)
+'''the above command is used for resuing the address each and every time i 
+restart the program '''
+
+info = (sys.arguments[1])
+a=info.split(':')
+iPaddress=str(a[0])
+port=int(a[1])
+nick=str(sys.arguments[2])
+
+#used to store values from command line
+server.connect((iPaddr, port))
+#connects to the server 
+firstmsg=server.recv(2048).decode('utf-8')
+
+print(firstmsg)
+
+nick = 'NICK ' + nick
+#print('NICK '+nick.encode('utf-8'))
+
+server.sendall(nick.encode('utf-8'))
+#senall command sends the info in it as bytes to the server , it sends all the bytes at a time
+okmessage=server.recv(2048).decode('utf-8')
+print(ok_msg)
+if okmessage == "OK":
+    pass
+elif okmessage == "ERR  nick name":
+    print('do not enter nick name with special characters,limit to 12 chars')
+    print('sorry you are disconnected try again with valid nickname')
+    sys.exit()
+    
+    
+
+
+
+while True:
+    socketlist=[sys.stdin, server]
+    ''' here either user wants to give an input to send to other people or server is sending a msg to us to be displayed on the terminal. '''
+
+    readsockets,writesockets,errorsockets=select.select(socketlist,[],[])
+    '''def select(rlist, wlist, xlist, timeout)
+Wait until one or more file descriptors are ready for some kind of I/O. The first three arguments are sequences of file descriptors to be waited for: rlist -- wait until ready for reading wlist -- wait until ready for writing xlist -- wait for an `exceptional condition'' If only one kind of condition is required, pass [] for the other lists. A file descriptor is either a socket or file object, or a small integer gotten from a fileno() method call on one of those.
+The optional 4th argument specifies a timeout in seconds; it may be a floating point number to specify fractions of seconds. If it is absent or None, the call will never time out.
+The return value is a tuple of three lists corresponding to the first three arguments; each contains the subset of the corresponding file descriptors that are ready.
+'''
+    for sockets in readsockets:
+        if sockets == server:
+            msg = sockets.recv(2048).decode('utf-8')
+            print(msg)
+        else:
+            msg=sys.stdin.readline()
+            #sys.stdin is a system output that represents standard input .readline() is used to readlines from the input
+            msg = 'MSG '+ msg
+            if msg == '\n':
+                continue
+            else:
+                server.sendall(msg.encode('utf-8'))
+                
+server.close()
+#above command closes the connection of the socket object
