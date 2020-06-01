@@ -10,35 +10,37 @@ if len(sys.argv)!=3:
     print("entry format = ./chatclient ip:port nickname")
     sys.exit()
 
-server = socket.socket(socket.Af_INET, socket.SOCK_STREAM)
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+'''creates a socket object with address of IPV4 type and TCP socket'''
 server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+'''the above command is used for resuing the address each and every time i 
+restart the program '''
 
-
-inf = (sys.argv[1])
-x=inf.split(':')
-iPaddress=str(a[0])
-port=int(x[1])
+Info = (sys.argv[1])
+a=Info.split(':')
+IP_addr=str(a[0])
+port=int(a[1])
 nick=str(sys.argv[2])
 
 #used to store values from command line
-server.connect((iPaddress, port))
+server.connect((IP_addr, port))
 #connects to the server 
-firstmsg=server.recv(2048).decode('utf-8')
+first_msg=server.recv(2048).decode('utf-8')
 
-print(firstmsg)
+print(first_msg)
 
 nick = 'NICK ' + nick
 #print('NICK '+nick.encode('utf-8'))
 
 server.sendall(nick.encode('utf-8'))
 #senall command sends the info in it as bytes to the server , it sends all the bytes at a time
-okmessage=server.recv(2048).decode('utf-8')
-print(okmessage)
-if okmessage == "OK":
+ok_msg=server.recv(2048).decode('utf-8')
+print(ok_msg)
+if ok_msg == "OK":
     pass
-elif okmessage == "ERR  malformed nick name":
-    print('nickname limited to 12 chars')
-    print('try valid nickname')
+elif ok_msg == "ERR malformed nick name":
+    print('do not enter nick name with special characters,limit to 12 chars')
+    print('sorry you are disconnected try again with valid nickname')
     sys.exit()
     
     
@@ -46,21 +48,27 @@ elif okmessage == "ERR  malformed nick name":
 
 
 while True:
-    socketlist=[sys.stdin, server]
- 
+    socket_list=[sys.stdin, server]
+    ''' here either user wants to give an input to send to other people or server is sending a msg to us to be displayed on the terminal. '''
 
-    readsockets,writesockets,errorsockets=select.select(socketlist,[],[])
-    for sockets in readsockets:
+    read_sockets,write_sockets,error_sockets=select.select(socket_list,[],[])
+    '''def select(rlist, wlist, xlist, timeout)
+Wait until one or more file descriptors are ready for some kind of I/O. The first three arguments are sequences of file descriptors to be waited for: rlist -- wait until ready for reading wlist -- wait until ready for writing xlist -- wait for an `exceptional condition'' If only one kind of condition is required, pass [] for the other lists. A file descriptor is either a socket or file object, or a small integer gotten from a fileno() method call on one of those.
+The optional 4th argument specifies a timeout in seconds; it may be a floating point number to specify fractions of seconds. If it is absent or None, the call will never time out.
+The return value is a tuple of three lists corresponding to the first three arguments; each contains the subset of the corresponding file descriptors that are ready.
+'''
+    for sockets in read_sockets:
         if sockets == server:
-            msg = sockets.recv(2048).decode('utf-8')
-            print(msg)
+            message = sockets.recv(2048).decode('utf-8')
+            print(message)
         else:
-            msg=sys.stdin.readline()
-            msg = 'MSG '+ msg
-            if msg == '\n':
+            message=sys.stdin.readline()
+            #sys.stdin is a system output that represents standard input .readline() is used to readlines from the input
+            message = 'MSG '+ message
+            if message == '\n':
                 continue
             else:
-                server.sendall(msg.encode('utf-8'))
+                server.sendall(message.encode('utf-8'))
                 
 server.close()
 #above command closes the connection of the socket object
